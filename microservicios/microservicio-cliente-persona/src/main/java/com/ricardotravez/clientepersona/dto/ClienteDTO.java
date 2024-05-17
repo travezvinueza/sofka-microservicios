@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -17,6 +18,7 @@ public class ClienteDTO{
     private int edad;
     private String identificacion;
     private String direccion;
+    private LocalDate fecha;
     private String telefono;
     private String contrasena;
     private boolean estado;

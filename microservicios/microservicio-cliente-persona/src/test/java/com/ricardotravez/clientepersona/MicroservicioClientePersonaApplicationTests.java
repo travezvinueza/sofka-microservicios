@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,6 +38,7 @@ class MicroservicioClientePersonaApplicationTests {
 				29,
 				faker.idNumber().validEnZaSsn(),
 				faker.address().streetName(),
+				LocalDate.now(),
 				faker.phoneNumber().cellPhone(),
 				"123456",
 				true,

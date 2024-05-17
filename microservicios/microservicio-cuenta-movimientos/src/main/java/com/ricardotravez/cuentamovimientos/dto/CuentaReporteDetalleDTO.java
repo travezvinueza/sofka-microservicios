@@ -4,16 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class CuentaReporteDetalleDTO {
-    private String tipoTransaccion;
-    private String fechaMovimiento;
+    private LocalDate fecha;
     private String tipoMovimiento;
-    private BigDecimal montoMovimiento;
-    private BigDecimal saldoDisponible;
-    private String observacion;
+    private double valor;
+    private double saldo;
+
 }

@@ -1,23 +1,23 @@
 package com.ricardotravez.cuentamovimientos.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class CuentaReporteDTO {
-    private String nombres;
-    private String dni;
-    private String tipoCuenta;
     private String numeroCuenta;
-    private BigDecimal montoInicial;
-    private String fechaInicio;
-    private String fechaFinal;
-    private String estado;
+    private String tipoCuenta;
+    private LocalDate fecha;
+    private double saldoInicial;
+    private boolean estado;
+    private ClienteDTO cliente;
     private List<CuentaReporteDetalleDTO> cuentaReporteDetalle;
+
 }

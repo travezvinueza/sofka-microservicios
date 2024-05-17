@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +32,7 @@ public class ClienteServiceImpl implements ClienteService {
         if (clienteExistenteOptional.isPresent()) {
             throw new RecursoNoEncontradoException("Ya existe un cliente con la misma identificación");
         }
+        clienteDTO.setFecha(LocalDate.now());
         Cliente cliente = modelMapper.map(clienteDTO, Cliente.class);
         return modelMapper.map(clienteRepository.save(cliente), ClienteDTO.class);
     }
@@ -66,6 +68,7 @@ public class ClienteServiceImpl implements ClienteService {
         Cliente clienteDB = modelMapper.map(obtenerPorId(clienteDTO.getId()), Cliente.class);
 
         clienteDB.setNombre(clienteDTO.getNombre());
+        clienteDB.setFecha(clienteDB.getFecha());
         clienteDB.setGenero(clienteDTO.getGenero());
         clienteDB.setEdad(clienteDTO.getEdad());
         clienteDB.setDireccion(clienteDTO.getDireccion());

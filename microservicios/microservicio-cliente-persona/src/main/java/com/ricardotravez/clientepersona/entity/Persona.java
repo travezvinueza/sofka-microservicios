@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "personas")
 @Data
@@ -17,6 +19,7 @@ public class Persona {
     private Long id;
     private String nombre;
     private String genero;
+    private LocalDate fecha;
     private int edad;
     private String identificacion;
     private String direccion;

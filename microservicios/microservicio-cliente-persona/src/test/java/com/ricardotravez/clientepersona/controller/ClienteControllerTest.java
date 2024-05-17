@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ class ClienteControllerTest {
                             clienteDTOArgument.getEdad(),
                             clienteDTOArgument.getIdentificacion(),
                             clienteDTOArgument.getDireccion(),
+                            LocalDate.now(),
                             clienteDTOArgument.getTelefono(),
                             clienteDTOArgument.getContrasena(),
                             clienteDTOArgument.isEstado(),
@@ -52,6 +54,7 @@ class ClienteControllerTest {
                         29,
                         "1723949291",
                         "Floresta",
+                        LocalDate.now(),
                         "0979317536",
                         "123456",
                         true,
@@ -65,8 +68,8 @@ class ClienteControllerTest {
     @Test
     void listarClientes() {
         List<ClienteDTO> clientes = new ArrayList<>();
-        clientes.add(new ClienteDTO(1L, "Cliente 1", "Masculino", 30, "ID1", "Dirección 1", "123456789", "contraseña", true, new ArrayList<>()));
-        clientes.add(new ClienteDTO(2L, "Cliente 2", "Femenino", 25, "ID2", "Dirección 2", "987654321", "contraseña2", true, new ArrayList<>()));
+        clientes.add(new ClienteDTO(1L, "Cliente 1", "Masculino", 30, "ID1", "Dirección 1",LocalDate.now(), "123456789", "contraseña", true, new ArrayList<>()));
+        clientes.add(new ClienteDTO(2L, "Cliente 2", "Femenino", 25, "ID2", "Dirección 2",LocalDate.now(), "987654321", "contraseña2", true, new ArrayList<>()));
 
         when(clienteService.listar()).thenReturn(clientes);
         ResponseEntity<List<ClienteDTO>> responseEntity = clienteController.listar();
@@ -76,7 +79,7 @@ class ClienteControllerTest {
 
     @Test
     void obtenerClientePorId() {
-        ClienteDTO clienteExistente = new ClienteDTO(1L, "Cliente 1", "Masculino", 30, "ID1", "Dirección 1", "123456789", "contraseña", true, new ArrayList<>());
+        ClienteDTO clienteExistente = new ClienteDTO(1L, "Cliente 1", "Masculino", 30, "ID1", "Dirección 1",LocalDate.now(), "123456789", "contraseña", true, new ArrayList<>());
 
         when(clienteService.obtenerPorId(1L)).thenReturn(clienteExistente);
         ResponseEntity<ClienteDTO> responseEntity = clienteController.obtenerPorId(1L);
@@ -92,7 +95,7 @@ class ClienteControllerTest {
 
     @Test
     void actualizarCliente() {
-        ClienteDTO clienteActualizado = new ClienteDTO(1L, "Cliente Actualizado", "Femenino", 35, "ID1", "Nueva Dirección", "987654321", "nuevaContraseña", true, new ArrayList<>());
+        ClienteDTO clienteActualizado = new ClienteDTO(1L, "Cliente Actualizado", "Femenino", 35, "ID1", "Nueva Dirección", LocalDate.now(),"987654321", "nuevaContraseña", true, new ArrayList<>());
 
         when(clienteService.actualizar(any(ClienteDTO.class))).thenReturn(clienteActualizado);
         ResponseEntity<ClienteDTO> responseEntity = clienteController.actualizar(clienteActualizado);

@@ -12,17 +12,18 @@ import com.ricardotravez.cuentamovimientos.exception.RecursoNoEncontradoExceptio
 import com.ricardotravez.cuentamovimientos.repository.CuentaRepository;
 import com.ricardotravez.cuentamovimientos.service.CuentaService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CuentaServiceImpl implements CuentaService {
     private final CuentaRepository cuentaRepository;
     private final ModelMapper modelMapper;
@@ -35,6 +36,7 @@ public class CuentaServiceImpl implements CuentaService {
             if (clienteDTO == null) {
                 throw new ClienteNoEncontradoException("");
             }
+            cuentaDTO.setFecha(LocalDate.now());
             Cuenta cuenta = modelMapper.map(cuentaDTO, Cuenta.class);
             return modelMapper.map(cuentaRepository.save(cuenta), CuentaDTO.class);
         } catch (Exception e) {
@@ -59,6 +61,7 @@ public class CuentaServiceImpl implements CuentaService {
         CuentaDTO cuentaDTODB = obtenerPorId(cuentaDTO.getId());
 
         cuentaDTODB.setNumeroCuenta(cuentaDTO.getNumeroCuenta());
+        cuentaDTODB.setFecha(cuentaDTO.getFecha());
         cuentaDTODB.setTipoCuenta(cuentaDTO.getTipoCuenta());
         cuentaDTODB.setSaldoInicial(cuentaDTO.getSaldoInicial());
         cuentaDTODB.setEstado(cuentaDTO.isEstado());
@@ -74,30 +77,44 @@ public class CuentaServiceImpl implements CuentaService {
         cuentaRepository.deleteById(id);
     }
 
-    @Override
     public List<CuentaDTO> findByIdCliente(String idCliente) {
-        return cuentaRepository.findByIdCliente(idCliente).stream().map(
-                (cuenta) -> modelMapper.map(cuenta, CuentaDTO.class)).collect(Collectors.toList());
+        List<Cuenta> cuentas = cuentaRepository.findByIdCliente(idCliente);
+        return cuentas.stream().map(cuenta -> modelMapper.map(cuenta, CuentaDTO.class)).collect(Collectors.toList());
     }
+
 
     @Override
     public CuentaReporteDTO obtenerReporteCuentaCliente(String numeroCuenta, LocalDate fechaInicio, LocalDate fechaFin) {
-        try{
-            Cuenta cuenta = cuentaRepository.findByNumeroCuentaAndMovimientoFecha(numeroCuenta, fechaInicio, fechaFin)
-                    .orElseThrow(() -> new RecursoNoEncontradoException("Error datos incorrectos"));
+        try {
+            // Buscar la cuenta y sus movimientos utilizando el repositorio
+            Optional<Cuenta> cuenta = cuentaRepository.findCuentaReportePorNumeroCuenta(numeroCuenta, fechaInicio, fechaFin);
 
-            List<CuentaReporteDetalleDTO> cuentaReporteDetalleDTOS = cuenta.getMovimientos().stream().map(movimiento -> modelMapper.map(movimiento, CuentaReporteDetalleDTO.class))
+            // Verificar si la cuenta es nula
+            if (cuenta.isEmpty()) {
+                throw new RecursoNoEncontradoException("No se encontró la cuenta con el número especificado o no hay movimientos en el rango de fechas proporcionado");
+            }
+
+            // Mapear los movimientos de la cuenta a DTOs utilizando ModelMapper
+            List<CuentaReporteDetalleDTO> cuentaReporteDetalleDTOS = cuenta.get().getMovimientos().stream()
+                    .map(movimiento -> modelMapper.map(movimiento, CuentaReporteDetalleDTO.class))
                     .collect(Collectors.toList());
 
+            // Mapear la cuenta a un DTO
             CuentaReporteDTO cuentaReporteDTO = modelMapper.map(cuenta, CuentaReporteDTO.class);
 
+            // Establecer conexion con servicio cliente para obtener datos de cliente
+            ClienteDTO clienteDTO = cuentaApi.getCientePorId(cuenta.get().getIdCliente());
             cuentaReporteDTO.setCuentaReporteDetalle(cuentaReporteDetalleDTOS);
-
+            cuentaReporteDTO.setCliente(clienteDTO);
             return cuentaReporteDTO;
-        }catch (Exception e){
-            throw new RuntimeException(e.getMessage());
+        } catch (RecursoNoEncontradoException ex) {
+            // Capturar la excepción específica de RecursoNoEncontradoException y relanzarla
+            throw ex;
+        } catch (Exception e) {
+            // Capturar cualquier otra excepción y registrarla antes de relanzarla
+            log.error("Error al obtener el reporte de la cuenta: ", e);
+            throw new RuntimeException("Error al obtener el reporte de la cuenta: " + e.getMessage(), e);
         }
-
-
     }
+
 }

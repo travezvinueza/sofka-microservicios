@@ -3,6 +3,7 @@ CREATE TABLE personas (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
     genero VARCHAR(255),
+    fecha DATE,
     edad INT,
     identificacion VARCHAR(255),
     direccion VARCHAR(255),

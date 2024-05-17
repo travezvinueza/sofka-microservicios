@@ -12,31 +12,33 @@ import com.ricardotravez.cuentamovimientos.repository.CuentaRepository;
 import com.ricardotravez.cuentamovimientos.repository.MovimientoRepository;
 import com.ricardotravez.cuentamovimientos.service.MovimientoService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class MovimientoServiceImpl implements MovimientoService {
 
-    private MovimientoRepository movimientoRepository;
-    private CuentaRepository cuentaRepository;
-    private ModelMapper modelMapper;
+    private final MovimientoRepository movimientoRepository;
+    private final CuentaRepository cuentaRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public MovimientoDTO crear(MovimientoDTO movimientoDTO) {
-        Movimiento movimiento = modelMapper.map(movimientoDTO, Movimiento.class);
 
-        movimiento.setFecha(movimientoDTO.getFecha());
-
-        Cuenta cuenta = cuentaRepository.findByNumeroCuenta(movimiento.getNumeroCuenta()).orElseThrow(
+        Cuenta cuenta = cuentaRepository.findByNumeroCuenta(movimientoDTO.getNumeroCuenta()).orElseThrow(
                 () -> new CuentaNoEncontradaException(MensajeError.CUENTA_NO_ENCONTRADA.toString()));
+
+        movimientoDTO.setFecha(LocalDate.now());
+        Movimiento movimiento = modelMapper.map(movimientoDTO, Movimiento.class);
         movimiento.setCuenta(cuenta);
         Optional<Movimiento> optionalMovimiento = movimientoRepository.obtenerUltimoMovimientoPorNumeroCuenta(cuenta.getNumeroCuenta());
 

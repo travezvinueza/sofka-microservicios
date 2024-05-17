@@ -2,6 +2,7 @@ package com.ricardotravez.cuentamovimientos.controller;
 
 import com.ricardotravez.cuentamovimientos.dto.CuentaDTO;
 import com.ricardotravez.cuentamovimientos.dto.CuentaReporteDTO;
+import com.ricardotravez.cuentamovimientos.dto.EstadoCuentaDTO;
 import com.ricardotravez.cuentamovimientos.service.CuentaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -51,9 +51,11 @@ public class CuentaController {
     }
 
     @GetMapping("/reporte-cuenta")
-    public CuentaReporteDTO obetnerCuentaReporte(@RequestParam String numeroCuenta,
-                                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaInicio,
-                                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaFin) {
-        return cuentaService.obtenerReporteCuentaCliente(numeroCuenta, fechaInicio, fechaFin);
+    public ResponseEntity<CuentaReporteDTO> obtenerEstadoCuenta(
+            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
+            @RequestParam("numeroCuenta") String numeroCuenta
+    ) {
+        return new ResponseEntity<>(cuentaService.obtenerReporteCuentaCliente(numeroCuenta, fechaInicio, fechaFin), HttpStatus.OK);
     }
 }

@@ -15,5 +15,6 @@ public interface CuentaService {
     void eliminarPorId(Long id);
     List<CuentaDTO> findByIdCliente(String idCliente);
 
+
     CuentaReporteDTO obtenerReporteCuentaCliente(String numeroCuenta, LocalDate fechaInicio, LocalDate fechaFin);
 }
