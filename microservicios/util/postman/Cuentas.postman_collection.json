@@ -36,7 +36,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"numeroCuenta\": \"453453453443\",\r\n  \"tipoCuenta\": \"AHORROS\",\r\n  \"saldoInicial\": 800,\r\n  \"estado\": \"true\",\r\n  \"idCliente\": \"8\"\r\n}",
+					"raw": "{\r\n  \"numeroCuenta\": \"123456\",\r\n  \"tipoCuenta\": \"AHORROS\",\r\n  \"saldoInicial\": 1000,\r\n  \"estado\": \"true\",\r\n  \"idCliente\": \"1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -130,6 +130,42 @@
 						"v1",
 						"cuentas",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReportePorCuenta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/v1/cuentas/reporte-cuenta?fechaInicio=2024-05-16&fechaFin=2024-05-17&numeroCuenta=123456",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"cuentas",
+						"reporte-cuenta"
+					],
+					"query": [
+						{
+							"key": "fechaInicio",
+							"value": "2024-05-16"
+						},
+						{
+							"key": "fechaFin",
+							"value": "2024-05-17"
+						},
+						{
+							"key": "numeroCuenta",
+							"value": "123456"
+						}
 					]
 				}
 			},

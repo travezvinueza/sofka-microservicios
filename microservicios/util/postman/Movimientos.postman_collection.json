@@ -14,7 +14,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\r\n  \"id\": \"2\",\r\n  \"fecha\": \"2024-05-15T10:30:00Z\",\r\n  \"tipoMovimiento\": \"RETIRO\",\r\n  \"valor\": 500.0,\r\n  \"saldo\": 900.0,\r\n  \"numeroCuenta\": \"12345998300\"\r\n}",
+					"raw": "{\r\n  \"tipoMovimiento\": \"RETIRO\",\r\n  \"valor\": 900.0,\r\n  \"numeroCuenta\": \"123456\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

@@ -14,7 +14,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"nombre\": \"Juan\",\r\n  \"genero\": \"Masculino\",\r\n  \"edad\": 27,\r\n  \"identificacion\": \"1750098780\",\r\n  \"direccion\": \"Calderon\",\r\n  \"telefono\": \"0955227447\",\r\n  \"contrasena\": \"123456\",\r\n  \"estado\": \"true\"\r\n}",
+					"raw": "{\r\n  \"nombre\": \"Sebastiann\",\r\n  \"genero\": \"Masculino\",\r\n  \"edad\": 24,\r\n  \"identificacion\": \"1724022437\",\r\n  \"direccion\": \"Vicentina\",\r\n  \"telefono\": \"0979317536\",\r\n  \"contrasena\": \"123456\",\r\n  \"estado\": \"true\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
